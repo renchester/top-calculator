@@ -1,0 +1,48 @@
+* {
+  vertical-align: baseline;
+  font-family: inherit;
+  font-style: inherit;
+  font-size: 100%;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+button {
+  cursor: pointer;
+}
+
+.shell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  min-height: 90vh;
+}
+
+.calculator-container {
+  background-color: aqua;
+  margin: auto;
+  display: grid;
+  grid-template-columns: repeat(4, 75px);
+  grid-template-rows: repeat(6, 75px);
+  grid-template-areas:
+    'display display display display'
+    'helper-ac helper-sign helper-percent operator-div'
+    'num-7 num-8 num-9 operator-mul'
+    'num-4 num-5 num-6 operator-sub'
+    'num-1 num-2 num-3 operator-add'
+    'num-0 num-0 num-dec operator-equal';
+}
+
+.display {
+  grid-area: display;
+}
+
+.num-0 {
+  grid-area: num-0;
+}
+
+.operator-active {
+  background-color: rgb(221, 221, 221);
+}
