@@ -11,27 +11,32 @@
   <body>
     <div class="shell">
       <div class="calculator-container">
-        <div class="display">DISPLAY HERE</div>
-        <button class="helper helper-ac">AC</button>
-        <button class="helper helper-sign">+/-</button>
-        <button class="helper helper-percent">%</button>
-        <button class="operator operator-div">/</button>
-        <button class="num num-9">9</button>
-        <button class="num num-8">8</button>
-        <button class="num num-7">7</button>
-        <button class="operator operator-mul">*</button>
-        <button class="num num-6">6</button>
-        <button class="num num-5">5</button>
-        <button class="num num-4">4</button>
-        <button class="operator operator-sub">-</button>
-        <button class="num num-3">3</button>
-        <button class="num num-2">2</button>
-        <button class="num num-1">1</button>
-        <button class="operator operator-add">+</button>
-        <button class="num num-0">0</button>
-        <button class="num num-dec">.</button>
-        <button class="operator operator-equal">=</button>
+        <div class="display">0</div>
+        <button class="helper helper-ac" data-value="clear">AC</button>
+        <button class="helper helper-sign" data-value="-">+/-</button>
+        <button class="helper helper-percent" data-value="%">%</button>
+        <button class="operator operator-div" data-operation="divide">/</button>
+        <button class="num num-9" data-value="9">9</button>
+        <button class="num num-8" data-value="8">8</button>
+        <button class="num num-7" data-value="7">7</button>
+        <button class="operator operator-mul" data-operation="multiply">
+          *
+        </button>
+        <button class="num num-6" data-value="6">6</button>
+        <button class="num num-5" data-value="5">5</button>
+        <button class="num num-4" data-value="4">4</button>
+        <button class="operator operator-sub" data-operation="subtract">
+          -
+        </button>
+        <button class="num num-3" data-value="3">3</button>
+        <button class="num num-2" data-value="2">2</button>
+        <button class="num num-1" data-value="1">1</button>
+        <button class="operator operator-add" data-operation="add">+</button>
+        <button class="num num-0" data-value="0">0</button>
+        <button class="num num-dec" data-value=".">.</button>
+        <button class="operator-equate" data-operation="equate">=</button>
       </div>
     </div>
+    <script src="script.js"></script>
   </body>
 </html>

@@ -1,6 +1,6 @@
 * {
   vertical-align: baseline;
-  font-family: inherit;
+  font-family: Arial, sans-serif;
   font-style: inherit;
   font-size: 100%;
   border: none;
@@ -37,12 +37,21 @@ button {
 
 .display {
   grid-area: display;
+  text-align: end;
+  justify-self: end;
+  align-self: center;
+  padding-right: 1em;
+}
+
+.nums {
+  grid-area: num-7 / num-7 / num-dec / num-dec;
 }
 
 .num-0 {
   grid-area: num-0;
 }
 
+button:active,
 .operator-active {
   background-color: rgb(221, 221, 221);
 }
