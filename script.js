@@ -43,10 +43,13 @@ function operate(nums, operator) {
 
 function calculate(e) {
   if (e.target.classList.contains('operator-equate')) {
+    nums.push(parseFloat(clicks.join('')));
+
+    calcDisplay.textContent = operate(nums, operation);
     nums = [operate(nums, operation)];
-    console.log('equate', nums);
   }
 
+  // 1 User clicks a number
   if (e.target.classList.contains('num')) {
     clicks.push(e.target.textContent);
     calcDisplay.textContent = clicks.join('');
@@ -55,11 +58,14 @@ function calculate(e) {
   if (e.target.classList.contains('operator')) {
     clicks.push(e.target.textContent);
 
-    operation = e.target.dataset.operate;
+    // Set operation to clicked operator
+    operation = e.target.dataset.operation;
+
+    // Set first number
     nums.push(parseFloat(clicks.join('')));
+
+    // Reset clicks
     clicks = [];
-    console.log('nums', nums);
-    console.log('operation', operation);
   }
 
   if (nums.length > 1) {
