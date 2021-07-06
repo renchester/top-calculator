@@ -6,10 +6,19 @@
   border: none;
   padding: 0;
   margin: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --calc-bg-color: rgb(180, 148, 111);
+  --border-props: 2px solid rgb(80, 80, 80);
 }
 
 button {
   cursor: pointer;
+  background-color: white;
+  font-size: 1.45rem;
+  font-family: 'Space Mono', monospace;
 }
 
 .shell {
@@ -21,11 +30,11 @@ button {
 }
 
 .calculator-container {
-  background-color: aqua;
+  background-color: var(--calc-bg-color);
   margin: auto;
   display: grid;
   grid-template-columns: repeat(4, 75px);
-  grid-template-rows: repeat(6, 75px);
+  grid-template-rows: auto repeat(5, 4.5em);
   grid-template-areas:
     'display display display display'
     'helper-ac helper-sign helper-percent operator-div'
@@ -33,6 +42,10 @@ button {
     'num-4 num-5 num-6 operator-sub'
     'num-1 num-2 num-3 operator-add'
     'num-0 num-0 num-dec operator-equal';
+  gap: 6px 6px;
+  border: 20px solid var(--calc-bg-color);
+  border-radius: 20px;
+  outline: var(--border-props);
 }
 
 .display {
@@ -40,18 +53,43 @@ button {
   text-align: end;
   justify-self: end;
   align-self: center;
-  padding-right: 1em;
+
+  overflow: auto;
+
+  padding: 0.05em 0.3em 0.05em 0;
+  border: var(--border-props);
+  margin: 0.1em auto 0;
+  width: 100%;
+  height: 80px;
+  background-color: white;
+  font-family: 'VT323', monospace;
+  font-size: 2rem;
 }
 
-.nums {
-  grid-area: num-7 / num-7 / num-dec / num-dec;
+.calc-btn {
+  border: var(--border-props);
+  border-radius: 6px;
+}
+
+.helper {
+  background-color: rgb(72, 157, 255);
+}
+
+.num,
+.num-dec {
+  background-color: rgb(61, 255, 87);
 }
 
 .num-0 {
   grid-area: num-0;
 }
 
-button:active,
+.operator,
+.operator-equate {
+  background-color: rgb(255, 138, 29);
+}
+.operator:active,
+.operator-equate:active,
 .operator-active {
-  background-color: rgb(221, 221, 221);
+  background-color: rgb(255, 176, 102);
 }

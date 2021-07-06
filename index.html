@@ -6,35 +6,52 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Mono&display=swap"
+      rel="stylesheet"
+    />
+
     <title>Calculator</title>
   </head>
   <body>
     <div class="shell">
       <div class="calculator-container">
-        <div class="display">0</div>
-        <button class="helper helper-ac" data-value="clear">AC</button>
-        <button class="helper helper-sign" data-value="-">+/-</button>
-        <button class="helper helper-percent" data-value="%">%</button>
-        <button class="operator operator-div" data-operation="divide">/</button>
-        <button class="num num-9" data-value="9">9</button>
-        <button class="num num-8" data-value="8">8</button>
-        <button class="num num-7" data-value="7">7</button>
-        <button class="operator operator-mul" data-operation="multiply">
+        <div class="calc-btn display">0</div>
+        <button class="calc-btn helper helper-ac" data-value="clear">AC</button>
+        <button class="calc-btn helper helper-sign" data-value="-">+/-</button>
+        <button class="calc-btn helper helper-percent" data-value="%">%</button>
+        <button class="calc-btn operator operator-div" data-operation="divide">
+          /
+        </button>
+        <button class="calc-btn num num-9" data-value="9">9</button>
+        <button class="calc-btn num num-8" data-value="8">8</button>
+        <button class="calc-btn num num-7" data-value="7">7</button>
+        <button
+          class="calc-btn operator operator-mul"
+          data-operation="multiply"
+        >
           *
         </button>
-        <button class="num num-6" data-value="6">6</button>
-        <button class="num num-5" data-value="5">5</button>
-        <button class="num num-4" data-value="4">4</button>
-        <button class="operator operator-sub" data-operation="subtract">
+        <button class="calc-btn num num-6" data-value="6">6</button>
+        <button class="calc-btn num num-5" data-value="5">5</button>
+        <button class="calc-btn num num-4" data-value="4">4</button>
+        <button
+          class="calc-btn operator operator-sub"
+          data-operation="subtract"
+        >
           -
         </button>
-        <button class="num num-3" data-value="3">3</button>
-        <button class="num num-2" data-value="2">2</button>
-        <button class="num num-1" data-value="1">1</button>
-        <button class="operator operator-add" data-operation="add">+</button>
-        <button class="num num-0" data-value="0">0</button>
-        <button class="num num-dec" data-value=".">.</button>
-        <button class="operator-equate">=</button>
+        <button class="calc-btn num num-3" data-value="3">3</button>
+        <button class="calc-btn num num-2" data-value="2">2</button>
+        <button class="calc-btn num num-1" data-value="1">1</button>
+        <button class="calc-btn operator operator-add" data-operation="add">
+          +
+        </button>
+        <button class="calc-btn num num-0" data-value="0">0</button>
+        <button class="calc-btn num-dec" data-value=".">.</button>
+        <button class="calc-btn operator-equate">=</button>
       </div>
     </div>
     <script src="script.js"></script>
