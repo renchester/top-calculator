@@ -8,96 +8,103 @@ const calcNumbers = document.querySelectorAll('.num');
 const calcOperators = document.querySelectorAll('.operator');
 const calcHelpers = document.querySelectorAll('.helper');
 
+const btnEquate = document.querySelector('.operator-equate');
+
 const btnClear = document.querySelector('.helper-ac');
+const btnIntSign = document.querySelector('.helper-sign');
 
 // State maintenance
-let clicks = [];
-let nums = [];
-let operation = '*';
+let numsToOperate = [];
+let num = '';
+let operation = '';
 
 // Functions
 
-function operate(nums, operator) {
+function calculate(nums, operation) {
   let answer;
-  switch (operator) {
+  let [num1, num2] = nums;
+
+  switch (operation) {
     case 'add':
-      answer = nums[0] + nums[1];
+      answer = num1 + num2;
       break;
     case 'subtract':
-      answer = nums[0] - nums[1];
+      answer = num1 - num2;
       break;
     case 'multiply':
-      answer = nums[0] * nums[1];
+      answer = num1 * num2;
       break;
     case 'divide':
-      answer = nums[0] / nums[1];
-      break;
-    case 'equate':
-      answer = 101;
+      answer = num1 / num2;
       break;
     default:
-      answer = nums[1];
+      clearAll();
   }
   return answer;
 }
 
-function calculate(e) {
-  if (e.target.classList.contains('operator-equate')) {
-    nums.push(parseFloat(clicks.join('')));
+function printNum(e) {
+  if (!e.target.classList.contains('num')) return;
+  num += e.target.textContent;
+  calcDisplay.textContent = num;
 
-    calcDisplay.textContent = operate(nums, operation);
-    nums = [operate(nums, operation)];
+  // Clause for when a user clicks on a number without setting an operation first
+  if (!operation) {
+    numsToOperate = [];
+  }
+}
+
+function setOperation(e) {
+  if (!e.target.classList.contains('operator')) return;
+
+  // Evaluate nums if operation has already been set. before setting a new one
+  if (operation) {
+    evaluateNums();
   }
 
-  // 1 User clicks a number
-  if (e.target.classList.contains('num')) {
-    clicks.push(e.target.textContent);
-    calcDisplay.textContent = clicks.join('');
+  // Establish the operation to be done
+  operation = e.target.dataset.operation;
+
+  calcOperators.forEach((op) => op.classList.remove('operator-active'));
+  e.target.classList.add('operator-active');
+
+  // Establish first number, stops the printNum function
+  if (!numsToOperate.length) {
+    numsToOperate.push(+num);
+    num = '';
   }
+}
 
-  if (e.target.classList.contains('operator')) {
-    clicks.push(e.target.textContent);
+function evaluateNums(e) {
+  calcOperators.forEach((op) => op.classList.remove('operator-active'));
 
-    // Set operation to clicked operator
-    operation = e.target.dataset.operation;
+  // Establish second number
+  numsToOperate.push(+num);
+  num = '';
 
-    // Set first number
-    nums.push(parseFloat(clicks.join('')));
-
-    // Reset clicks
-    clicks = [];
-  }
-
-  if (nums.length > 1) {
-    calcDisplay.textContent = operate(nums, operation);
-    nums = [operate(nums, operation)];
-  }
-
-  console.log('clicks', clicks);
+  if (numsToOperate.length > 1) {
+    const answer = calculate(numsToOperate, operation);
+    calcDisplay.textContent = answer;
+    numsToOperate = [answer];
+    operation = null;
+  } else return;
 }
 
 function clearAll(e) {
-  clicks = [];
-  nums = [];
+  calcOperators.forEach((op) => op.classList.remove('operator-active'));
+  numsToOperate = [];
+  num = '';
   calcDisplay.textContent = 0;
 }
 
+function changeSign(e) {
+  calcDisplay.textContent = calcDisplay.textContent * -1;
+  num = calcDisplay.textContent * -1;
+}
+
 // Event listeners
-container.addEventListener('click', calculate);
+container.addEventListener('click', printNum);
+container.addEventListener('click', setOperation);
+btnEquate.addEventListener('click', evaluateNums);
 btnClear.addEventListener('click', clearAll);
-
-/*
-  if (e.target.classList.contains('num')) {
-    num1.push(e.target.textContent);
-    calcDisplay.textContent = num1.join('');
-  }
-
-  if (e.target.classList.contains('operator')) {
-    calcOperators.forEach((operator) =>
-      operator.classList.remove('operator-active')
-    );
-    e.target.classList.add('operator-active');
-    const calcNum1 = num1.join('');
-  }
-
-*/
+btnIntSign.addEventListener('click', changeSign);
