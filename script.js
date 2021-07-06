@@ -186,24 +186,13 @@ function eraseLast(e) {
 
 function processDecimals(num) {
   let text = num.toString();
-  let [integer, decimals] = num.toString().split('.');
 
-  if (text.indexOf('e-') > -1) {
-    let [base, trail] = text.split('e-');
-    let deg = parseInt(trail, 10);
-    return deg;
-  }
+  if (text.split('').length > 14) {
+    let numArr = text.split('');
+    numArr.splice(15, 0, '\n');
 
-  if (integer.split('').length > 8) {
-    console.log(integer);
-    console.log(integer.slice(0, 1));
-    return integer.slice(0, 1);
-  }
-
-  if (decimals?.split('').length > 8) {
-    return num.toFixed(8);
-  }
-  return num;
+    return numArr.join('');
+  } else return num;
 }
 
 // Event listeners
