@@ -17,20 +17,15 @@ const btnPercent = document.querySelector('.helper-percent');
 
 // State maintenance
 let firstNum = 0;
-let numDisplay = '';
+let numOnDisplay = '';
 let operation = '';
-let decClickable = true;
 
-// Functions
+// Main Functions
 
 function calculate(secondNum, operation) {
   let answer;
 
-  if (operation === 'divide' && secondNum === 0) {
-    alert("You can't divide by zero");
-    clearAll();
-    return 0;
-  }
+  if (!checkDivideZero(secondNum, operation)) return;
 
   switch (operation) {
     case 'add':
@@ -55,41 +50,34 @@ function calculate(secondNum, operation) {
 
 function printNumClick(e) {
   if (!e.target.classList.contains('num')) return;
-  numDisplay += e.target.textContent;
-
-  setNum();
-}
-
-function printDecimal(e) {
-  if (e.key) {
-    if (e.key !== '.') return;
-  }
-
-  if (!calcDisplay.textContent.split('').includes('.')) {
-    numDisplay += '.';
-    calcDisplay.textContent = numDisplay;
-  } else return;
+  setNum(e.target.textContent);
 }
 
 function printNumKey(e) {
   if (isNaN(+e.key)) return;
-  numDisplay += e.key;
-  setNum();
-  return;
+  setNum(e.key);
 }
 
-function setNum() {
-  calcDisplay.textContent = numDisplay;
+function setNum(toDisplay) {
+  numOnDisplay += toDisplay;
+  calcDisplay.textContent = numOnDisplay;
   if (!operation) firstNum = '';
+}
+
+function printDecimal(e) {
+  if (!checkKey(e, '.')) return;
+
+  if (!calcDisplay.textContent.split('').includes('.')) {
+    numOnDisplay += '.';
+    calcDisplay.textContent = numOnDisplay;
+  } else return;
 }
 
 function setOperationClick(e) {
   if (!e.target.classList.contains('operator')) return;
 
-  // Evaluate nums if operation has already been set, before setting a new one
   if (operation) evaluateNums(e);
 
-  // Establish the operation to be done
   operation = e.target.dataset.operation;
 
   operate();
@@ -121,50 +109,48 @@ function setOperationKey(e) {
 }
 
 function operate() {
-  calcOperators.forEach((op) => op.classList.remove('operator-active'));
+  removeActive();
   Array.from(calcOperators)
     .filter((op) => op.dataset.operation === operation)[0]
     .classList.add('operator-active');
 
   // Establish first number, stops the printNum function
-  if (!firstNum) firstNum = +numDisplay;
+  if (!firstNum) firstNum = +numOnDisplay;
 
   // Reset display so user can input a new number
-  numDisplay = '';
+  numOnDisplay = '';
 }
 
 function evaluateNums(e) {
-  if (e.key) {
-    if (e.key !== 'Enter') return;
-  }
+  if (!checkKey(e, 'Enter')) return;
 
-  calcOperators.forEach((op) => op.classList.remove('operator-active'));
+  removeActive();
+
   if (firstNum) {
-    calcDisplay.textContent = calculate(+numDisplay, operation);
-    firstNum = calcDisplay.textContent;
+    calcDisplay.textContent = calculate(+numOnDisplay, operation);
+    updateFirstNum();
 
-    numDisplay = '';
+    numOnDisplay = '';
     operation = null;
   } else return;
 }
 
 // Helper functions
 function clearAll(e) {
-  calcOperators.forEach((op) => op.classList.remove('operator-active'));
-  numDisplay = '';
+  removeActive();
+  numOnDisplay = '';
   firstNum = '';
   calcDisplay.textContent = 0;
-  decClickable = true;
 }
 
 function changeSign(e) {
   calcDisplay.textContent = calcDisplay.textContent * -1;
-  firstNum = +calcDisplay.textContent;
+  updateFirstNum();
 }
 
 function makePercent(e) {
   calcDisplay.textContent = calcDisplay.textContent / 100;
-  firstNum = +calcDisplay.textContent;
+  updateFirstNum();
 }
 
 function eraseLast(e) {
@@ -180,8 +166,8 @@ function eraseLast(e) {
   }
 
   calcDisplay.textContent = displayArr.join('');
-  firstNum = +calcDisplay.textContent;
-  numDisplay = '';
+  updateFirstNum();
+  numOnDisplay = '';
 }
 
 function processDecimals(num) {
@@ -195,6 +181,27 @@ function processDecimals(num) {
   } else return num;
 }
 
+function checkDivideZero(secondNum, operation) {
+  if (operation === 'divide' && secondNum === 0) {
+    alert("You can't divide by zero");
+    clearAll();
+    return false;
+  } else return true;
+}
+
+function removeActive() {
+  calcOperators.forEach((op) => op.classList.remove('operator-active'));
+}
+
+function checkKey(e, char) {
+  if (!e.key) return true;
+  else return e.key === char ? true : false;
+}
+
+function updateFirstNum() {
+  firstNum = +calcDisplay.textContent;
+}
+
 // Event listeners
 container.addEventListener('click', printNumClick);
 window.addEventListener('keydown', printNumKey);
@@ -205,11 +212,11 @@ window.addEventListener('keydown', setOperationKey);
 btnEquate.addEventListener('click', evaluateNums);
 window.addEventListener('keydown', evaluateNums);
 
+btnDecimal.addEventListener('click', printDecimal);
+window.addEventListener('keydown', printDecimal);
+
 btnClear.addEventListener('click', clearAll);
 btnIntSign.addEventListener('click', changeSign);
 btnPercent.addEventListener('click', makePercent);
-
-btnDecimal.addEventListener('click', printDecimal);
-window.addEventListener('keydown', printDecimal);
 
 window.addEventListener('keydown', eraseLast);
