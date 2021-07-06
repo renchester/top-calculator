@@ -49,16 +49,26 @@ function calculate(secondNum, operation) {
   return answer;
 }
 
-function printNum(e) {
+function printNumClick(e) {
   if (!e.target.classList.contains('num')) return;
   numDisplay += e.target.textContent;
-  calcDisplay.textContent = numDisplay;
 
-  // Clause for when a user clicks on a number without setting an operation first
+  setNum();
+}
+
+function printNumKey(e) {
+  if (!isNaN(+e.key) || e.key === '.') {
+    numDisplay += e.key;
+    setNum();
+  } else return;
+}
+
+function setNum() {
+  calcDisplay.textContent = numDisplay;
   if (!operation) firstNum = '';
 }
 
-function setOperation(e) {
+function setOperationClick(e) {
   if (!e.target.classList.contains('operator')) return;
 
   // Evaluate nums if operation has already been set, before setting a new one
@@ -67,8 +77,38 @@ function setOperation(e) {
   // Establish the operation to be done
   operation = e.target.dataset.operation;
 
+  operate();
+}
+
+function setOperationKey(e) {
+  const operators = ['+', '-', '*', '/'];
+
+  if (!operators.some((op) => op === e.key)) return;
+
+  switch (e.key) {
+    case '+':
+      operation = 'add';
+      break;
+    case '-':
+      operation = 'subtract';
+      break;
+    case '*':
+      operation = 'multiply';
+      break;
+    case '/':
+      e.preventDefault();
+      operation = 'divide';
+      break;
+  }
+
+  operate();
+}
+
+function operate() {
   calcOperators.forEach((op) => op.classList.remove('operator-active'));
-  e.target.classList.add('operator-active');
+  Array.from(calcOperators)
+    .filter((op) => op.dataset.operation === operation)[0]
+    .classList.add('operator-active');
 
   // Establish first number, stops the printNum function
   if (!firstNum) firstNum = +numDisplay;
@@ -78,8 +118,11 @@ function setOperation(e) {
 }
 
 function evaluateNums(e) {
-  calcOperators.forEach((op) => op.classList.remove('operator-active'));
+  if (e.key) {
+    if (e.key !== 'Enter') return;
+  }
 
+  calcOperators.forEach((op) => op.classList.remove('operator-active'));
   if (firstNum) {
     calcDisplay.textContent = firstNum = calculate(+numDisplay, operation);
 
@@ -106,13 +149,35 @@ function makePercent(e) {
   firstNum = +calcDisplay.textContent;
 }
 
-// Event listeners
-container.addEventListener('click', printNum);
-window.addEventListener('keypress', printKeyNum);
+function eraseLast(e) {
+  if (e.key !== 'Backspace') return;
+  const displayArr = calcDisplay.textContent.split('');
+  displayArr.splice(-1);
 
-container.addEventListener('click', setOperation);
+  if (!displayArr.length) displayArr.push(0);
+
+  if (operation === null) {
+    clearAll();
+    return;
+  }
+
+  calcDisplay.textContent = displayArr.join('');
+  firstNum = +calcDisplay.textContent;
+  numDisplay = '';
+}
+
+// Event listeners
+container.addEventListener('click', printNumClick);
+window.addEventListener('keydown', printNumKey);
+
+container.addEventListener('click', setOperationClick);
+window.addEventListener('keydown', setOperationKey);
+
 btnEquate.addEventListener('click', evaluateNums);
+window.addEventListener('keydown', evaluateNums);
 
 btnClear.addEventListener('click', clearAll);
 btnIntSign.addEventListener('click', changeSign);
 btnPercent.addEventListener('click', makePercent);
+
+window.addEventListener('keydown', eraseLast);
