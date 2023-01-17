@@ -13,6 +13,8 @@ const operators = document.querySelectorAll('.btn--operate');
 const btnClear = document.querySelector('.btn--clear');
 const btnResult = document.querySelector('.btn--result');
 const btnDecimal = document.querySelector('.btn--decimal');
+const btnPercent = document.querySelector('.btn--percent');
+const btnSign = document.querySelector('.btn--sign');
 
 // STATE MAINTENANCE
 
@@ -28,13 +30,35 @@ function setNumber(e) {
   updateScreen(numberToSet);
 }
 
-function addDecimal(e) {
+function addDecimal() {
   if (!allowDecimal) return;
 
   numberToSet += '.';
   updateScreen(numberToSet);
 
   allowDecimal = false;
+}
+
+function convertPercent() {
+  let num = getNumberFromScreen();
+
+  numberToSet = +num / 100;
+
+  updateScreen(numberToSet);
+}
+
+function convertNumSign() {
+  let num = getNumberFromScreen();
+
+  numberToSet = -num;
+
+  if 
+
+  updateScreen(numberToSet);
+}
+
+function getNumberFromScreen() {
+  return screenDisplay.textContent;
 }
 
 function operate(operation, num1, num2) {
@@ -113,3 +137,5 @@ operators.forEach((op) => op.addEventListener('click', calculate));
 btnClear.addEventListener('click', clearAll);
 btnResult.addEventListener('click', calculate);
 btnDecimal.addEventListener('click', addDecimal);
+btnPercent.addEventListener('click', convertPercent);
+btnSign.addEventListener('click', convertNumSign);
