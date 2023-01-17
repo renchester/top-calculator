@@ -12,6 +12,7 @@ const operators = document.querySelectorAll('.btn--operate');
 
 const btnClear = document.querySelector('.btn--clear');
 const btnResult = document.querySelector('.btn--result');
+const btnDecimal = document.querySelector('.btn--decimal');
 
 // STATE MAINTENANCE
 
@@ -19,11 +20,21 @@ let numbers = [];
 let numberToSet = '';
 let operation = '';
 let result;
+let allowDecimal = true;
 
 // MAIN FUNCTIONS
 function setNumber(e) {
   numberToSet += e.target.dataset.num;
   updateScreen(numberToSet);
+}
+
+function addDecimal(e) {
+  if (!allowDecimal) return;
+
+  numberToSet += '.';
+  updateScreen(numberToSet);
+
+  allowDecimal = false;
 }
 
 function operate(operation, num1, num2) {
@@ -75,6 +86,7 @@ function calculate(e) {
   // reset
   operation = e.target.dataset.operation || operation;
   numberToSet = '';
+  allowDecimal = true;
 }
 
 function clearAll() {
@@ -83,6 +95,7 @@ function clearAll() {
   numberToSet = '';
   operation = '';
   result = '';
+  allowDecimal = true;
 }
 
 // DISPLAY FUNCTIONS
@@ -99,3 +112,4 @@ digits.forEach((digit) => digit.addEventListener('click', setNumber));
 operators.forEach((op) => op.addEventListener('click', calculate));
 btnClear.addEventListener('click', clearAll);
 btnResult.addEventListener('click', calculate);
+btnDecimal.addEventListener('click', addDecimal);
