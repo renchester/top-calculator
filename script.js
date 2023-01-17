@@ -13,112 +13,89 @@ const operators = document.querySelectorAll('.btn--operate');
 const btnClear = document.querySelector('.btn--clear');
 const btnResult = document.querySelector('.btn--result');
 
-// STATE
+// STATE MAINTENANCE
 
-let operands = [];
-let numberStr = '';
+let numbers = [];
+let numberToSet = '';
 let operation = '';
 let result;
 
-//  FUNCTIONS
-
-function clickNum(e) {
-  // Collects the values of the buttons clicked
-
-  let value = e.target.dataset.num;
-
-  numberStr += value;
-
-  //  then displays it on the screen
-
-  displayOnScreen(numberStr);
+// MAIN FUNCTIONS
+function setNumber(e) {
+  numberToSet += e.target.dataset.num;
+  updateScreen(numberToSet);
 }
 
-function evaluate(e) {
-  if (operands.length < 2) {
-    operands.push(+numberStr);
-  }
+function operate(operation, num1, num2) {
+  let answer;
 
-  if (operands.length == 2) {
-    getResult();
-    displayOnScreen(result);
-    operands = [result];
-  }
-
-  operation = e.target.dataset.operation || operation;
-  numberStr = '';
-}
-
-function getResult() {
   switch (operation) {
     case 'add':
-      result = getSum(operands[0], operands[1]);
+      answer = +num1 + +num2;
       break;
 
     case 'subtract':
-      result = getDifference(operands[0], operands[1]);
+      answer = +num1 - +num2;
       break;
 
     case 'multiply':
-      result = getProduct(operands[0], operands[1]);
+      answer = +num1 * +num2;
       break;
 
     case 'divide':
-      result = getQuotient(operands[0], operands[1]);
+      if (!+num2) alert('cannot do');
+
+      answer = +num1 / +num2;
       break;
   }
 
-  return result;
+  return answer;
 }
 
-function getSum(x, y) {
-  return +x + +y;
+function calculate(e) {
+  clearScreen();
+  console.log('calculate start', numbers, operation);
+
+  if (numbers.length < 2 && numberToSet) {
+    numbers.push(numberToSet);
+  }
+
+  if (numbers.length == 2) {
+    // if two values are available, you can now evaluate them
+
+    // The operation will be available bc there are two numbers already
+    result = operate(operation, ...numbers);
+    updateScreen(result);
+    console.log('calculate done', numbers, operation);
+
+    // Store result as first operand for another eval
+    numbers = [`${result}`];
+  }
+
+  // reset
+  operation = e.target.dataset.operation || operation;
+  numberToSet = '';
 }
 
-function getDifference(x, y) {
-  return +x - +y;
-}
-
-function getProduct(x, y) {
-  return +x * +y;
-}
-
-function getQuotient(x, y) {
-  return +x / +y;
-}
-
-function clearData() {
-  operands = [];
-  numberStr = '';
+function clearAll() {
+  clearScreen();
+  numbers = [];
+  numberToSet = '';
+  operation = '';
+  result = '';
 }
 
 // DISPLAY FUNCTIONS
-
-function displayOnScreen(content) {
-  screenDisplay.textContent = content;
-}
-
-function displayResult(value) {
-  screenResult.textContent = value;
+function updateScreen(value) {
+  screenDisplay.textContent = value;
 }
 
 function clearScreen() {
   screenDisplay.textContent = '';
 }
 
-function clearResult() {
-  screenResult.textContent = '';
-}
-
-function clearDisplay() {
-  screenDisplay.textContent = '';
-  screenResult.textContent = '';
-}
-
 // EVENT HANDLERS
-
-digits.forEach((digit) => digit.addEventListener('click', clickNum));
-operators.forEach((operator) => operator.addEventListener('click', evaluate));
-
-btnClear.addEventListener('click', clearDisplay);
-btnClear.addEventListener('click', clearData);
+digits.forEach((digit) => digit.addEventListener('click', setNumber));
+operators.forEach((op) => op.addEventListener('click', calculate));
+btnClear.addEventListener('click', clearAll);
+btnResult.addEventListener('click', calculate);
