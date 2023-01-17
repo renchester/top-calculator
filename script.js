@@ -20,6 +20,8 @@ const btnSign = document.querySelector('.btn--sign');
 
 let numbers = [];
 let numberToSet = '';
+let firstNum;
+let secondNum;
 let operation = '';
 let result;
 let allowDecimal = true;
@@ -42,19 +44,25 @@ function addDecimal() {
 function convertPercent() {
   let num = getNumberFromScreen();
 
-  numberToSet = +num / 100;
+  if (!numberToSet) {
+    firstNum = +num / 100;
+  } else {
+    numberToSet = +num / 100;
+  }
 
-  updateScreen(numberToSet);
+  updateScreen(firstNum || numberToSet);
 }
 
 function convertNumSign() {
   let num = getNumberFromScreen();
 
-  numberToSet = -num;
+  if (!numberToSet) {
+    firstNum = -num;
+  } else {
+    numberToSet = -num;
+  }
 
-  if 
-
-  updateScreen(numberToSet);
+  updateScreen(firstNum || numberToSet);
 }
 
 function getNumberFromScreen() {
@@ -88,34 +96,29 @@ function operate(operation, num1, num2) {
 }
 
 function calculate(e) {
-  clearScreen();
-  console.log('calculate start', numbers, operation);
+  // clearScreen();
+  console.log('calculate start', operation);
 
-  if (numbers.length < 2 && numberToSet) {
-    numbers.push(numberToSet);
-  }
-
-  if (numbers.length == 2) {
-    // if two values are available, you can now evaluate them
-
-    // The operation will be available bc there are two numbers already
-    result = operate(operation, ...numbers);
+  if (!firstNum) {
+    firstNum = +numberToSet;
+    numberToSet = '';
+  } else if (firstNum && numberToSet) {
+    secondNum = +numberToSet;
+    result = operate(operation, firstNum, secondNum);
     updateScreen(result);
-    console.log('calculate done', numbers, operation);
 
-    // Store result as first operand for another eval
-    numbers = [`${result}`];
+    firstNum = result;
+    numberToSet = '';
   }
 
   // reset
   operation = e.target.dataset.operation || operation;
-  numberToSet = '';
   allowDecimal = true;
 }
 
 function clearAll() {
   clearScreen();
-  numbers = [];
+  firstNum = '';
   numberToSet = '';
   operation = '';
   result = '';
