@@ -113,11 +113,14 @@ function calculate(e) {
 
   // reset
   operation = e.target.dataset.operation || operation;
+  makeActive(e.target);
   allowDecimal = true;
 }
 
 function clearAll() {
   clearScreen();
+  removeActive();
+
   firstNum = '';
   numberToSet = '';
   operation = '';
@@ -132,6 +135,15 @@ function updateScreen(value) {
 
 function clearScreen() {
   screenDisplay.textContent = '';
+}
+
+function makeActive(el) {
+  operators.forEach((op) => op.classList.remove('btn-active'));
+  el.classList.add('btn-active');
+}
+
+function removeActive() {
+  operators.forEach((op) => op.classList.remove('btn-active'));
 }
 
 // EVENT HANDLERS
