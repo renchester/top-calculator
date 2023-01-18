@@ -12,34 +12,44 @@
       href="https://fonts.googleapis.com/css2?family=Space+Mono&display=swap"
       rel="stylesheet"
     />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    />
 
     <title>Calculator</title>
   </head>
   <body>
     <div class="container">
+      <div class="theme theme--dark material-symbols-outlined">light_mode</div>
       <div class="calc-container">
         <div class="calc--screen">
-          <div class="screen--display">TEST 0102</div>
-          <div class="screen--result">021201210459</div>
+          <div class="screen--display">0</div>
         </div>
         <div class="calc--buttons">
           <div class="btn btn--once btn--clear">AC</div>
           <div class="btn btn--once btn--sign">+/-</div>
           <div class="btn btn--once btn--percent">%</div>
-          <div class="btn btn--operate btn--divide">/</div>
-          <div class="btn btn--num btn--9">9</div>
-          <div class="btn btn--num btn--8">8</div>
-          <div class="btn btn--num btn--7">7</div>
-          <div class="btn btn--operate btn--multiply">*</div>
-          <div class="btn btn--num btn--6">6</div>
-          <div class="btn btn--num btn--5">5</div>
-          <div class="btn btn--num btn--4">4</div>
-          <div class="btn btn--operate btn--subtract">-</div>
-          <div class="btn btn--num btn--3">3</div>
-          <div class="btn btn--num btn--2">2</div>
-          <div class="btn btn--num btn--1">1</div>
-          <div class="btn btn--operate btn--add">+</div>
-          <div class="btn btn--num btn--0">0</div>
+          <div class="btn btn--operate btn--divide" data-operation="divide">
+            /
+          </div>
+          <div class="btn btn--num btn--9" data-num="9">9</div>
+          <div class="btn btn--num btn--8" data-num="8">8</div>
+          <div class="btn btn--num btn--7" data-num="7">7</div>
+          <div class="btn btn--operate btn--multiply" data-operation="multiply">
+            *
+          </div>
+          <div class="btn btn--num btn--6" data-num="6">6</div>
+          <div class="btn btn--num btn--5" data-num="5">5</div>
+          <div class="btn btn--num btn--4" data-num="4">4</div>
+          <div class="btn btn--operate btn--subtract" data-operation="subtract">
+            -
+          </div>
+          <div class="btn btn--num btn--3" data-num="3">3</div>
+          <div class="btn btn--num btn--2" data-num="2">2</div>
+          <div class="btn btn--num btn--1" data-num="1">1</div>
+          <div class="btn btn--operate btn--add" data-operation="add">+</div>
+          <div class="btn btn--num btn--0" data-num="0">0</div>
           <div class="btn btn--decimal">.</div>
           <div class="btn btn--result">=</div>
         </div>

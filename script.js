@@ -2,6 +2,9 @@
 
 //  DOM SELECTORS
 
+const bodyEl = document.querySelector('body');
+const footerText = document.querySelector('.footer--label');
+
 const screen = document.querySelector('.calc--screen');
 const screenDisplay = document.querySelector('.screen--display');
 const screenResult = document.querySelector('.screen--result');
@@ -15,6 +18,7 @@ const btnResult = document.querySelector('.btn--result');
 const btnDecimal = document.querySelector('.btn--decimal');
 const btnPercent = document.querySelector('.btn--percent');
 const btnSign = document.querySelector('.btn--sign');
+const btnTheme = document.querySelector('.theme');
 
 // STATE MAINTENANCE
 
@@ -144,6 +148,34 @@ function removeActive() {
   operators.forEach((op) => op.classList.remove('btn-active'));
 }
 
+function toggleTheme(e) {
+  e.target.classList.contains('theme--light')
+    ? changeTheme('lightMode')
+    : changeTheme('darkMode');
+
+  btnTheme.classList.toggle('theme--light');
+  btnTheme.classList.toggle('theme--dark');
+}
+
+function changeTheme(desired) {
+  let darkMode = '#40434e';
+  let lightMode = '#fffffa';
+  let color, other;
+
+  if (desired === 'darkMode') {
+    color = lightMode;
+    other = darkMode;
+  } else {
+    color = darkMode;
+    other = lightMode;
+  }
+
+  bodyEl.style.backgroundColor = color;
+  btnTheme.style.color = other;
+  btnTheme.textContent = `${desired.split('Mode')[0]}_mode`;
+  footerText.style.color = other;
+}
+
 // EVENT HANDLERS
 digits.forEach((digit) => digit.addEventListener('click', setNumber));
 operators.forEach((op) => op.addEventListener('click', calculate));
@@ -152,3 +184,4 @@ btnResult.addEventListener('click', calculate);
 btnDecimal.addEventListener('click', addDecimal);
 btnPercent.addEventListener('click', convertPercent);
 btnSign.addEventListener('click', convertNumSign);
+btnTheme.addEventListener('click', toggleTheme);
