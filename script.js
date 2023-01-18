@@ -32,10 +32,60 @@ let secondNum;
 let result;
 let allowDecimal = true;
 
-// MAIN FUNCTIONS
+// MAIN CALCULATOR FUNCTIONS
+
 function setNumber(e) {
   numberToSet += e.target.dataset.num;
   updateScreen(numberToSet);
+}
+
+function operate(operation, num1, num2) {
+  let answer;
+
+  switch (operation) {
+    case 'add':
+      answer = +num1 + +num2;
+      break;
+
+    case 'subtract':
+      answer = +num1 - +num2;
+      break;
+
+    case 'multiply':
+      answer = +num1 * +num2;
+      break;
+
+    case 'divide':
+      answer = +num1 / +num2;
+      break;
+  }
+
+  return answer;
+}
+
+function calculate(e) {
+  if ((firstNum === 0 || firstNum) && numberToSet) {
+    secondNum = +numberToSet;
+
+    if (isDividingByZero(operation, secondNum)) {
+      clearAll();
+      return;
+    }
+
+    result = operate(operation, firstNum, secondNum);
+    updateScreen(result);
+
+    firstNum = result;
+    numberToSet = '';
+  }
+
+  if (!firstNum) {
+    firstNum = +numberToSet;
+    numberToSet = '';
+  }
+
+  setNewOperation(e.target.dataset.operation);
+  makeActive(e.target);
 }
 
 function addDecimal() {
@@ -65,56 +115,18 @@ function convertNumSign() {
   updateScreen(firstNum || numberToSet);
 }
 
+// HELPER FUNCTIONS
+
 function getNumberFromScreen() {
   return screenDisplay.textContent;
 }
 
-function operate(operation, num1, num2) {
-  let answer;
-
-  switch (operation) {
-    case 'add':
-      answer = +num1 + +num2;
-      break;
-
-    case 'subtract':
-      answer = +num1 - +num2;
-      break;
-
-    case 'multiply':
-      answer = +num1 * +num2;
-      break;
-
-    case 'divide':
-      if (+num2 === 0) {
-        alert('Divisor cannot be 0');
-        clearAll();
-        return 0;
-      } else answer = +num1 / +num2;
-      break;
-  }
-
-  return answer;
-}
-
-function calculate(e) {
-  if ((firstNum === 0 || firstNum) && numberToSet) {
-    secondNum = +numberToSet;
-    result = operate(operation, firstNum, secondNum);
-    updateScreen(result);
-
-    firstNum = result;
-    numberToSet = '';
-  }
-
-  if (!firstNum) {
-    firstNum = +numberToSet;
-    numberToSet = '';
-  }
-
-  // If another operator is clicked instead of equals, the calculation will still proceed and the following will be done
-  setNewOperation(e.target.dataset.operation);
-  makeActive(e.target);
+function isDividingByZero(operation, num2) {
+  if (operation === 'divide' && +num2 === 0) {
+    alert('Divisor cannot be 0');
+    clearAll();
+    return true;
+  } else return false;
 }
 
 function setNewOperation(newOperation = operation) {
@@ -127,6 +139,7 @@ function clearAll() {
   removeActive();
 
   firstNum = '';
+  secondNum = '';
   numberToSet = '';
   operation = '';
   result = '';
@@ -134,6 +147,7 @@ function clearAll() {
 }
 
 // DISPLAY FUNCTIONS
+
 function updateScreen(value) {
   screenDisplay.textContent = value;
 }
@@ -161,7 +175,7 @@ function toggleTheme(e) {
 }
 
 function changeTheme(desired) {
-  let darkMode = '#40434e';
+  let darkMode = '#303036';
   let lightMode = '#fffffa';
   let color, other;
 
@@ -192,11 +206,13 @@ function changeStyle(e) {
 }
 
 // EVENT HANDLERS
+
 digits.forEach((digit) => digit.addEventListener('click', setNumber));
 operators.forEach((op) => op.addEventListener('click', calculate));
 stylesContainer.forEach((styleBtn) =>
   styleBtn.addEventListener('click', changeStyle)
 );
+
 btnClear.addEventListener('click', clearAll);
 btnResult.addEventListener('click', calculate);
 btnDecimal.addEventListener('click', addDecimal);
