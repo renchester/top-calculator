@@ -1,6 +1,6 @@
 * {
   vertical-align: baseline;
-  font-family: 'Space Mono', Arial, Helvetica, sans-serif;
+  font-family: 'Open Sans', Arial, Helvetica, sans-serif;
   font-style: inherit;
   font-size: 100%;
   border: none;
@@ -10,16 +10,18 @@
 }
 
 :root {
-  --color-black: #080705;
-  --color-gray: #40434e;
-  --color-maroon: #702632;
-  --color-sienna: #4c1a22;
-  --color-wine: #912f40;
-  --color-white: #fffffa;
+  --color-1: #38618c;
+  --color-2: #ff5964;
+  --color-3: #ffe74c;
+  --color-31: #fff08e;
+  --color-4: #fff1d0;
+  --color-5: #35a7ff;
+  --color-6: #231123;
+  --color-7: #303036;
 }
 
 body {
-  background-color: var(--color-maroon);
+  background-color: var(--color-7);
 }
 
 /*  CALCULATOR STYLES */
@@ -34,29 +36,32 @@ body {
 
 .calc-container {
   padding: 25px;
-  border: 2px solid rgba(255, 255, 255, 0.4);
+  border: 2px solid rgb(255, 255, 255);
   border-top: 0;
   border-radius: 15px;
   display: flex;
   flex-direction: column;
   gap: 20px;
-  background-color: var(--color-black);
+  background-color: black;
   box-shadow: rgba(0, 0, 0, 0.8) 0px 3px 8px;
   position: relative;
+  width: 450px;
 }
 
 .calc--screen {
-  height: 120px;
+  height: 140px;
   border-radius: 5px;
   padding: 10px;
   text-align: right;
-  background-color: var(--color-white);
-  width: 400px;
-  overflow-x: scroll;
+  background-color: black;
+  color: white;
+  overflow-x: auto;
+  border: 2px solid black;
+  box-shadow: 1px 2px 10px 2px rgba(0, 0, 0, 0.5) inset;
 }
 
 .screen--display {
-  font-size: 40px;
+  font-size: 35px;
 }
 
 .screen--display {
@@ -66,34 +71,45 @@ body {
 .calc--buttons {
   display: grid;
   grid-template-columns: repeat(4, 1fr [col-start]);
-  gap: 10px;
-  color: var(--color-white);
+  gap: 2px;
+  color: var(--color-7);
   max-width: 600px;
 }
 
 .btn {
   padding: 25px;
-  background-color: var(--color-maroon);
+  background-color: orange;
   text-align: center;
   cursor: pointer;
-  border-radius: 10px;
-  font-size: 21px;
-  box-shadow: rgba(255, 106, 106, 0.925) 5px 5px 15px -12px inset;
+  font-size: 24px;
+  font-weight: 600;
+  transition: 0.1s ease-in-out;
 }
 
-.btn:active {
-  background-color: var(--color-wine);
-  transform: translateY(2px);
+.btn--operate,
+.btn--result {
+  background-color: var(--color-5);
+  transition: 0.1s ease-in-out;
+}
+
+.btn--num:active,
+.btn--once:active {
+  background-color: rgb(255, 177, 32);
 }
 
 .btn--operate.btn-active {
-  background-color: var(--color-sienna);
-  box-shadow: none;
+  color: var(--color-4);
+  background-color: #0078d3;
 }
 
 .btn--0 {
   grid-column-start: 1;
   grid-column-end: 3;
+  border-bottom-left-radius: 5px;
+}
+
+.btn--result {
+  border-bottom-right-radius: 5px;
 }
 
 /*  THEME */
@@ -108,7 +124,7 @@ body {
 
 .material-symbols-outlined {
   font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 48;
-  color: var(--color-white);
+  color: var(--color-4);
   opacity: 0.8;
 }
 
@@ -125,16 +141,17 @@ body {
 }
 
 .style {
-  background-color: var(--color-gray);
-  border: 2px solid var(--color-white);
+  background-color: var(--color-6);
+  border: 2px solid var(--color-4);
   width: 20px;
   height: 20px;
   border-radius: 50%;
   cursor: pointer;
+  transition: 0.5s ease-in;
 }
 
 .style-active {
-  background-color: var(--color-white);
+  background-color: orange;
   transform: scale(1.2);
 }
 
@@ -151,7 +168,7 @@ footer a {
   font-family: Arial, Helvetica, sans-serif;
   font-size: 14px;
   text-decoration: none;
-  color: var(--color-white);
+  color: var(--color-4);
   display: flex;
   justify-content: center;
   align-items: center;
