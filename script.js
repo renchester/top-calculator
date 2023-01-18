@@ -18,11 +18,10 @@ const btnSign = document.querySelector('.btn--sign');
 
 // STATE MAINTENANCE
 
-let numbers = [];
 let numberToSet = '';
+let operation = '';
 let firstNum;
 let secondNum;
-let operation = '';
 let result;
 let allowDecimal = true;
 
@@ -43,12 +42,10 @@ function addDecimal() {
 
 function convertPercent() {
   let num = getNumberFromScreen();
+  let percent = +num / 100;
 
-  if (!numberToSet) {
-    firstNum = +num / 100;
-  } else {
-    numberToSet = +num / 100;
-  }
+  //  If numberToSet is not available yet, then the stored firstNum is converted
+  !numberToSet ? (firstNum = percent) : (numberToSet = percent);
 
   updateScreen(firstNum || numberToSet);
 }
@@ -56,11 +53,7 @@ function convertPercent() {
 function convertNumSign() {
   let num = getNumberFromScreen();
 
-  if (!numberToSet) {
-    firstNum = -num;
-  } else {
-    numberToSet = -num;
-  }
+  !numberToSet ? (firstNum = -num) : (numberToSet = -num);
 
   updateScreen(firstNum || numberToSet);
 }
@@ -86,9 +79,11 @@ function operate(operation, num1, num2) {
       break;
 
     case 'divide':
-      if (!+num2) alert('cannot do');
-
-      answer = +num1 / +num2;
+      if (+num2 === 0) {
+        alert('Divisor cannot be 0');
+        clearAll();
+        return 0;
+      } else answer = +num1 / +num2;
       break;
   }
 
@@ -96,13 +91,7 @@ function operate(operation, num1, num2) {
 }
 
 function calculate(e) {
-  // clearScreen();
-  console.log('calculate start', operation);
-
-  if (!firstNum) {
-    firstNum = +numberToSet;
-    numberToSet = '';
-  } else if (firstNum && numberToSet) {
+  if ((firstNum === 0 || firstNum) && numberToSet) {
     secondNum = +numberToSet;
     result = operate(operation, firstNum, secondNum);
     updateScreen(result);
@@ -111,9 +100,18 @@ function calculate(e) {
     numberToSet = '';
   }
 
-  // reset
-  operation = e.target.dataset.operation || operation;
+  if (!firstNum) {
+    firstNum = +numberToSet;
+    numberToSet = '';
+  }
+
+  // If another operator is clicked instead of equals, the calculation will still proceed and the following will be done
+  setNewOperation(e.target.dataset.operation);
   makeActive(e.target);
+}
+
+function setNewOperation(newOperation = operation) {
+  operation = newOperation;
   allowDecimal = true;
 }
 
@@ -134,7 +132,7 @@ function updateScreen(value) {
 }
 
 function clearScreen() {
-  screenDisplay.textContent = '';
+  screenDisplay.textContent = '0';
 }
 
 function makeActive(el) {
