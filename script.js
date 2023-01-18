@@ -3,6 +3,7 @@
 //  DOM SELECTORS
 
 const bodyEl = document.querySelector('body');
+const links = document.querySelectorAll('link');
 const footerText = document.querySelector('.footer--label');
 
 const screen = document.querySelector('.calc--screen');
@@ -19,6 +20,8 @@ const btnDecimal = document.querySelector('.btn--decimal');
 const btnPercent = document.querySelector('.btn--percent');
 const btnSign = document.querySelector('.btn--sign');
 const btnTheme = document.querySelector('.theme');
+
+const stylesContainer = document.querySelectorAll('.style');
 
 // STATE MAINTENANCE
 
@@ -176,9 +179,24 @@ function changeTheme(desired) {
   footerText.style.color = other;
 }
 
+function changeStyle(e) {
+  stylesContainer.forEach((styleBtn) =>
+    styleBtn.classList.remove('style-active')
+  );
+  e.target.classList.add('style-active');
+
+  const stylesheet = links[0];
+  const styleNum = e.target.dataset.style;
+
+  stylesheet.href = `css/style${styleNum}.css`;
+}
+
 // EVENT HANDLERS
 digits.forEach((digit) => digit.addEventListener('click', setNumber));
 operators.forEach((op) => op.addEventListener('click', calculate));
+stylesContainer.forEach((styleBtn) =>
+  styleBtn.addEventListener('click', changeStyle)
+);
 btnClear.addEventListener('click', clearAll);
 btnResult.addEventListener('click', calculate);
 btnDecimal.addEventListener('click', addDecimal);
